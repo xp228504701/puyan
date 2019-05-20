@@ -1,0 +1,36 @@
+#配置端口
+server:
+  port: 8081
+#配置证书
+#  ssl:
+#    key-store: classpath:xfuyi.com.pfx
+#    key-store-password: 68adFuXh
+#    key-store-type: PKCS12
+
+
+#配置jdbc
+spring:
+  datasource:
+    name: test
+    url: jdbc:mysql://47.106.174.164:3306/reservation?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: user
+    password: user
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  thymeleaf:
+    cache: false
+
+#配置mybatis整合
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  type-aliases-package: com.py.bean  # 注意：对应实体类的路径
+
+
+#配置日志
+#logging:
+#  level:
+#    com.py: trace
+
+  ##可以在指定的地方生成日志文件
+  ##file: C:/logger/spring-boot.log
+
+

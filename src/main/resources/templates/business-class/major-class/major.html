@@ -1,0 +1,255 @@
+﻿<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <![endif]-->
+    <link rel="stylesheet" href="${APP_PATH }/static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}">
+    <link rel="stylesheet" href="${APP_PATH }/static/mycss/style.css" th:href="@{/static/mycss/style.css}">
+
+    <title>大类列表</title>
+  </head>
+  <style>
+
+  </style>
+  <body>
+
+    <div class="layui-fluid">
+      <div class="layui-card">
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+        </div>
+
+        <div class="layui-card-body">
+          <div style="padding-bottom: 10px;">
+            <button class="layui-btn layuiadmin-btn-admin" onclick="batch_delete();">删除</button>
+            <button class="layui-btn layuiadmin-btn-admin" onclick="add();">添加</button>
+          </div>
+          <table id="layer-table" lay-filter="table"></table>
+          <!-- 右边按钮 -->
+          <script type="text/html" id="rbtn">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+          </script>
+
+          <!-- 时间转化模板  -->
+          <script id="timeConversion" type="text/html">
+            {{timestampToTime(d.time)}}
+          </script>
+          <!-- 图片视图模板  -->
+          <script id="Images" type="text/html">
+            {{#if(d.images!= null ){}}
+            <img title="" src="{{d.images}}"  onerror="this.src='/static/img/imgmo.jpg'" height="100%;"/>
+            {{#}else{}}
+            无图片
+            {{#}}}
+          </script>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="${APP_PATH }/static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+    <script src="${APP_PATH }/static/jquery/1.9.1/jquery.min.js" th:src="@{/static/jquery/1.9.1/jquery.min.js}"></script>
+    <script type="text/javascript" th:inline="none">
+
+      var table,form;
+      layui.use(['table','form'], function(){
+        table = layui.table;
+        form = layui.form;
+
+        //加载表格数据
+        table.render({
+          elem: '#layer-table'
+          ,url:'/getMajorAll'
+          ,cellMinWidth: 80
+          ,page:true
+          ,cols: [[
+            {type:'checkbox'}
+            ,{field:'id', title: 'id',hide: true}
+            ,{field:'name', title: '大类名称',align:'center'}
+            ,{field:'images', title: '大类图标',align:'center',event:'#Images',templet:'#Images'}
+            ,{field:'time', title: '创建时间',templet:'#timeConversion',align:'center'}
+            ,{title:'操作',align:'center', toolbar: '#rbtn'}
+          ]]
+
+        });
+
+        //监听右边按钮
+        table.on('tool(table)', function(obj){
+          var data = obj.data //获得当前行数据
+                  ,layEvent = obj.event; //获得 lay-event 对应的值
+          if(layEvent === 'del'){
+            doDelete('您确定要删除数据吗？删除后将无法恢复。',data.id);
+          }
+          if(layEvent === 'edit'){
+            doForm('修改菜单',data.id);
+          }
+        });
+      })
+      //新增
+      function add(){
+        doForm('新增菜单',0);
+      }
+
+      //批量删除
+      function batch_delete(){
+        var array = new Array();
+        var checkStatus = table.checkStatus('layer-table')
+                ,data = checkStatus.data;
+        if(data.length == 0){
+          layer.msg('请选择');
+          return;
+        }
+        for (var i = 0; i < data.length; i++) {
+          var obj = data[i];
+          array.push(obj.id);
+        }
+        doBatchDelete('您确定要删除选择的数据吗？删除后将无法恢复。',array);
+      }
+
+
+      //条件查询
+      function conditionSearch(){
+        var loginname = $("#loginname").val();
+        table.reload('layer-table', {
+          page: {
+            curr: 1 //重新从第 1 页开始
+          }
+          ,where: {
+            loginname: loginname,
+          }
+        });
+      }
+
+
+
+      //form弹出框
+      function doForm(title,id){
+        layer.open({
+          type: 2,
+          title: title,
+          shade: 0.8,
+          maxmin: true,
+          area: ['400px','350px'],
+          content: '/majorForm?id='+id,
+          btn: ['立即提交'],
+          yes: function(index, layero){
+            var nodeName = window["layui-layer-iframe" + index];
+            nodeName.submitForm(index);
+          }
+        });
+      }
+
+      //重置
+      function conditionReset(){
+        $("#loginname").val('');
+        //刷新下拉菜单
+        table.reload('layer-table', {
+          page: {
+            curr: 1 //重新从第 1 页开始
+          }
+          ,where: {
+            loginname: '',
+          }
+        });
+      }
+
+
+      //删除
+      function doDelete(title,id){
+        layer.confirm(title, function(index) {
+          $.ajax({
+            url: '/deleteMajorClass',
+            type:"post",
+            //async:false,
+            dataType:"json",
+            data:{id:id},
+            success: function (result) {
+              layer.close(index);
+              var type = result.type;
+              var code = result.code;
+              if(type == 'delete'){
+                if(code == 'success'){
+                  layer.msg('删除成功', {
+                    icon: 6,
+                    time: 1500 //1.5秒关闭（如果不配置，默认是3秒）
+                  });
+                  setTimeout(function(){
+                    //重置页面
+                    conditionReset();
+                  }, 1500);
+                }
+              }
+            },error : function(){
+              layer.close(index);
+              layer.msg('删除失败', {
+                icon: 6,
+                time: 1500 //1.5秒关闭（如果不配置，默认是3秒）
+              });
+            }
+          });
+        });
+      }
+
+      //批量删除
+      function doBatchDelete(title,array){
+        layer.confirm(title, function(index) {
+          $.ajax({
+            url: '/batchDeleteMajorClass',
+            type:"post",
+            //async:false,
+            dataType:"json",
+            data:{ids:array},
+            success: function (result) {
+              layer.close(index);
+              var type = result.type;
+              var code = result.code;
+              if(type == 'delete'){
+                if(code == 'success'){
+                  layer.msg('删除成功', {
+                    icon: 6,
+                    time: 1500 //1.5秒关闭（如果不配置，默认是3秒）
+                  });
+                  setTimeout(function(){
+                    //重置页面
+                    conditionReset();
+                  }, 1500);
+                }
+              }
+            },error : function(){
+              layer.close(index);
+              layer.msg('删除失败', {
+                icon: 6,
+                time: 1500 //1.5秒关闭（如果不配置，默认是3秒）
+              });
+            }
+          });
+        });
+      }
+
+
+
+      function timestampToTime(timestamp){
+        if(null == timestamp || timestamp.length == 0){
+          return '';
+        }
+        var date = new Date(timestamp);
+        var y = date.getFullYear();
+        var m = date.getMonth()+1;
+        m = m<10?'0'+m:m;
+        var d = date.getDate();
+        d = d<10?("0"+d):d;
+        var h = date.getHours();
+        h = h<10?("0"+h):h;
+        var M = date.getMinutes();
+        M = M<10?("0"+M):M;
+        return y+"-"+m+"-"+d+" "+h+":"+M;
+      }
+
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="${APP_PATH }/static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}">
+		<link rel="stylesheet" href="${APP_PATH }/static/mycss/style.css" th:href="@{/static/mycss/style.css}">
+	</head>
+	<style>
+		.contPadding{
+			padding-top: 20px;
+			width: 350px;
+		}
+
+	</style>
+	<body class="contPadding">
+		<span th:id="formUrl" style="display: none;" th:text="${Surl}"></span>
+		<form class="layui-form" id="form" action="" commandName="obj" lay-filter="formFilter">
+			<div class="layui-form-item" style="display: none;">
+				<label class="layui-form-label">id</label>
+				<div class="layui-input-block">
+					<input type="text" name="id" lay-verify="id" th:value="${menu} eq null ? '' : ${menu.id}" id="id" class="layui-input" value='${admin.id }'>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">菜单名称</label>
+				<div class="layui-input-block">
+					<input type="text" name="name" id="name" th:value="${menu} eq null ? '' : ${menu.name}" lay-verify="name" autocomplete="off" placeholder="请输入名称" class="layui-input" value='${admin.account}'>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">上级菜单</label>
+				<div class="layui-input-block">
+					<!--<input type="text"  id="superiorId" name="superiorId" th:value="${menu} eq null ? '' : ${menu.superiorId}" lay-verify="superiorId" autocomplete="off" class="layui-input" value="${admin.password}">-->
+					<select th:name="superiorId" th:id="superiorId" class="layui-form-label">
+                        <option th:value="0">主菜单</option>
+                        <option th:value="${fName.id}" th:selected="${menu} eq null? false : (${menu.superiorId} eq ${fName.id}? true : false)" th:each="fName:${fatherName}" th:text="${fName.name}"></option>
+                    </select>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">菜单路径</label>
+				<div class="layui-input-block">
+					<input type="text"  id="path" name="path" th:value="${menu} eq null ? '' : ${menu.path}" lay-verify="path" autocomplete="off" placeholder="请输入路径" class="layui-input" value="${admin.password}">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">菜单备注</label>
+				<div class="layui-input-block">
+					<input type="text" id="note" name="note" th:value="${menu} eq null ? '' : ${menu.note}" lay-verify="note" autocomplete="off" class="layui-input" value="${admin.fullName}">
+				</div>
+			</div>
+
+			<button class="layui-btn" lay-submit lay-filter="submmitFilter" style="display: none;" id="sunmitbtn"></button>
+		</form>
+
+		<!-- JS -->
+		<script src="${APP_PATH }/static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+		<script src="${APP_PATH }/static/jquery/1.9.1/jquery.min.js" th:src="@{/static/jquery/1.9.1/jquery.min.js}"></script>
+		<script type="text/javascript" th:inline="none">
+
+			var parentIndex;
+			layui.use(['form'], function(){
+				var form = layui.form
+						,layer = layui.layer
+				/* //监听开关
+                form.on('switch(stateFilter)',function(data){
+                        if(data.elem.checked){
+                            $("#state").val(0);
+                        }else{
+                            $("#state").val(1);
+                        }
+                }) */
+				//表单验证
+				form.verify({
+					name: function(value, item){ //value：表单的值、item：表单的DOM对象
+						value = $.trim(value);
+						if(value.length == 0){
+							return '菜单名不能为空';
+						}
+					},
+                    path: function(value, item){ //value：表单的值、item：表单的DOM对象
+                        value = $.trim(value);
+                        if ($("#superiorId").val() != 0){
+							if(value.length == 0){
+								return '路径不能为空';
+							}
+						}
+                    }
+
+				});
+				//监听提交
+				form.on('submit(submmitFilter)', function(data){
+					$.ajax({
+						url: $("#formUrl").text(),
+						type: 'POST',
+						data: $("#form").serialize(),
+						async:false,
+						success: function(result){
+							var code = result.code;
+							var type = result.type;
+							if(code =='2'){
+								layer.msg('菜单名已经存在', {
+									icon: 5
+									,time: 1500
+								});
+								return ;
+							}
+							if(code =='3'){
+								layer.msg('路径已经存在', {
+									icon: 5
+									,time: 1500
+								});
+								return ;
+							}
+							if(code == '1'){
+								if(type == 'add'){
+									layer.msg('添加成功', {
+										icon: 6
+										,time: 1500
+									});
+								}
+								if(type == 'update'){
+									layer.msg('修改成功', {
+										icon: 6
+										,time: 1500
+									});
+								}
+								setTimeout(function(){
+									parent.conditionReset();
+									parent.layer.close(parentIndex);
+								}, 1500);
+							}
+						},
+						error: function() {
+							layer.msg('提交失败', {
+								icon: 5
+								,time: 1500
+							});
+						}
+					});
+					return false;
+				});
+
+			});
+			//模拟按钮提交
+			function submitForm(index){
+				parentIndex = index;
+				$("#sunmitbtn").click();
+			}
+
+		</script>
+
+	</body>
+</html>

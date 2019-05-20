@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="${APP_PATH }/static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}">
+		<link rel="stylesheet" href="${APP_PATH }/static/mycss/style.css" th:href="@{/static/mycss/style.css}">
+	</head>
+	<style>
+		.contPadding{
+			padding-top: 20px;
+			width: 350px;
+		}
+
+	</style>
+	<body class="contPadding">
+		<span th:id="formUrl" style="display: none;" th:text="${Surl}"></span>
+		<form class="layui-form" id="form" action="" commandName="obj" lay-filter="formFilter">
+			<div class="layui-form-item" style="display: none;">
+				<label class="layui-form-label">id</label>
+				<div class="layui-input-block">
+					<input type="text" name="id" lay-verify="id" th:value="${info} eq null ? '' : ${info.id}" id="id" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">标题</label>
+				<div class="layui-input-block">
+					<input type="text" name="title" id="title" th:value="${info} eq null ? '' : ${info.title}" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input" value='${admin.account}'>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">内容信息</label>
+				<div class="layui-input-block">
+					<input type="text" name="value" id="value" th:value="${info} eq null ? '' : ${info.value}" lay-verify="value" autocomplete="off" placeholder="请输入内容" class="layui-input" value='${admin.account}'>
+				</div>
+			</div>
+			<!-- 展示图片上传" -->
+			<div class="layui-form-item">
+				<label class="layui-form-label"></label>
+				<div class="layui-upload-list">
+					<img  width="90px" height="95px" th:src="${info} eq null ? '' : ${info.img}" class="layui-upload-img" id="demo"  onerror="this.src='/static/img/02.png'">
+					<input type="hidden" id="img" name="img" th:value="${info} eq null ? '' : ${info.img}" lay-verify="img" />
+					<p id="demoText"></p>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label"></label>
+				<div class="layui-upload">
+					<button type="button" class="layui-btn" id="test"> <i class="layui-icon">&#xe67c;</i>上传图片</button>
+				</div>
+			</div>
+			<button class="layui-btn" lay-submit lay-filter="submmitFilter" style="display: none;" id="sunmitbtn"></button>
+		</form>
+
+		<!-- JS -->
+		<script src="${APP_PATH }/static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+		<script src="${APP_PATH }/static/jquery/1.9.1/jquery.min.js" th:src="@{/static/jquery/1.9.1/jquery.min.js}"></script>
+		<script type="text/javascript" th:inline="none">
+
+			var parentIndex;
+			layui.use(['form'], function(){
+				var form = layui.form
+						,layer = layui.layer
+
+				//监听提交
+				form.on('submit(submmitFilter)', function(data){
+					$.ajax({
+						url: $("#formUrl").text(),
+						type: 'POST',
+						data: $("#form").serialize(),
+						async:false,
+						success: function(result){
+							var code = result.code;
+							var type = result.type;
+							if(code == '1'){
+								if(type == 'add'){
+									layer.msg('添加成功', {
+										icon: 6
+										,time: 1500
+									});
+								}
+								if(type == 'update'){
+									layer.msg('修改成功', {
+										icon: 6
+										,time: 1500
+									});
+								}
+								setTimeout(function(){
+									parent.conditionReset();
+									parent.layer.close(parentIndex);
+								}, 1500);
+							}
+						},
+						error: function() {
+							layer.msg('提交失败', {
+								icon: 5
+								,time: 1500
+							});
+						}
+					});
+					return false;
+				});
+
+			});
+			//模拟按钮提交
+			function submitForm(index){
+				parentIndex = index;
+				$("#sunmitbtn").click();
+			}
+
+			var showImg =new Array();
+			var detailsImg =new Array();
+			/* 图片上传 */
+			layui.use('upload', function(){
+				var upload = layui.upload;
+				//执行实例
+				var uploadInst = upload.render({
+					elem: '#test' //绑定元素
+					,url: '/upload/uploadFile?name=imgFile' //上传接口
+					,method:'post'   //提交方式
+					,field:'videoImage' //设定文件域的字段名
+					,accept:'images' //只允许上传图片
+					,acceptMime:'image/*' //打开文本选择框时，只显示图片类型
+					,size:10240  //设置文件最大可允许上传的大小，单位 KB。
+					,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+						layer.load(); //上传loading
+						//预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+						obj.preview(function(index, file, result){
+							$('#demo').attr('src',result);
+							$('#demo').attr('alt',file.name);
+						});
+					}
+					,done: function(res){//上传完毕回调
+						layer.closeAll('loading');//关闭loading
+						//获得文件的链接等，
+						if(res.state==0){//上传成功
+							$('#img').val(res.link);
+						}else {
+							layer.msg('失败', {
+								icon: 5
+								,time: 1500
+							});
+						}
+					}
+					,error: function(){
+						//请求异常回调
+						layer.closeAll('loading');//关闭loading
+					}
+				});
+			})
+
+
+		</script>
+
+	</body>
+</html>

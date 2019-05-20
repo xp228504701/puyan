@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.py.dao.FriendShipMapper">
+  <resultMap id="BaseResultMap" type="com.py.bean.FriendShip">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="link" jdbcType="VARCHAR" property="link" />
+    <result column="param" jdbcType="VARCHAR" property="param" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, value, link, param
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from friend_ship
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from friend_ship
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.py.bean.FriendShip">
+    insert into friend_ship (id, value, link, 
+      param)
+    values (#{id,jdbcType=INTEGER}, #{value,jdbcType=VARCHAR}, #{link,jdbcType=VARCHAR}, 
+      #{param,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.py.bean.FriendShip">
+    insert into friend_ship
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="value != null">
+        value,
+      </if>
+      <if test="link != null">
+        link,
+      </if>
+      <if test="param != null">
+        param,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="link != null">
+        #{link,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        #{param,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.py.bean.FriendShip">
+    update friend_ship
+    <set>
+      <if test="value != null">
+        value = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="link != null">
+        link = #{link,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        param = #{param,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.py.bean.FriendShip">
+    update friend_ship
+    set value = #{value,jdbcType=VARCHAR},
+      link = #{link,jdbcType=VARCHAR},
+      param = #{param,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.py.bean.FriendShip">
+
+    select * from friend_ship where 1=1
+    <if test="value != null">
+      and `value` = #{value,jdbcType=VARCHAR}
+    </if>
+    <if test="link != null">
+      and link = #{link,jdbcType=VARCHAR}
+    </if>
+    <if test="param != null">
+      and param = #{param,jdbcType=VARCHAR}
+    </if>
+
+  </select>
+
+
+
+
+</mapper>

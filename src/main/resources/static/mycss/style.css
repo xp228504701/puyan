@@ -1,0 +1,11 @@
+body{
+	font-size: 14px;
+}
+.layui-form-itemmmm{
+	font-size: 12px;
+	
+}
+.layui-form-itemmmm :after {
+	margin-bottom: 5px;
+}
+

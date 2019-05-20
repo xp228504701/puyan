@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="${APP_PATH }/static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}">
+		<link rel="stylesheet" href="${APP_PATH }/static/mycss/style.css" th:href="@{/static/mycss/style.css}">
+	</head>
+	<style>
+		.contPadding{
+			padding-top: 20px;
+			width: 350px;
+		}
+		input::-webkit-input-placeholder {
+			color: #aab2bd;
+			font-size: 12px;
+			text-align: right;
+		}
+
+	</style>
+	<body class="contPadding">
+		<span th:id="formUrl" style="display: none;" th:text="${Surl}"></span>
+		<form class="layui-form" id="form" action="" commandName="obj" lay-filter="formFilter">
+			<!--<div class="layui-form-item" style="display: none;">
+				<label class="layui-form-label">id</label>
+				<div class="layui-input-block">
+					<input type="text" name="id" lay-verify="id" id="id" class="layui-input" value='${admin.id }'>
+				</div>
+			</div>-->
+			<div class="layui-form-item">
+				<label class="layui-form-label">添加类型</label>
+				<div class="layui-input-block">
+					<select lay-filter="type" lay-verify="type" th:name="type" th:id="type" class="layui-form-label">
+						<option th:value="0">请选择类型</option>
+						<option th:value="1" >用户</option>
+						<option th:value="2" >师傅</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item" th:id="bigClass" style="display: none;">
+				<label class="layui-form-label">选择大类</label>
+				<div class="layui-input-block">
+					<select lay-filter="majorClass" lay-verify="majorClass" th:name="majorClass" th:id="majorClass" class="layui-form-label">
+						<option th:value="0">请选择类型</option>
+						<option th:value="${major.id}" th:each="major:${mc}" th:text="${major.name}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item" th:id="sClass" style="display: none;">
+				<label class="layui-form-label">选择小类</label>
+				<div class="layui-input-block">
+					<select lay-verify="smallClass" th:name="smallClass" id="smallClass" class="layui-form-label"></select>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">标签类型</label>
+				<div class="layui-input-block">
+					<select lay-verify="label" th:name="label" th:id="label" class="layui-form-label">
+						<option th:value="0">请选择标签</option>
+						<option th:value="1" >文本框</option>
+						<option th:value="2" >单选框</option>
+						<option th:value="3" >多选框</option>
+						<option th:value="4" >图片上传1</option>
+						<option th:value="5" >图片上传2</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">标签NAME</label>
+				<div class="layui-input-block">
+					<input type="text" name="labelName" id="labelName" lay-verify="labelName" autocomplete="off"  class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">标签ID</label>
+				<div class="layui-input-block">
+					<input type="text" name="labelId" id="labelId" lay-verify="labelId" autocomplete="off"  class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">标签标题</label>
+				<div class="layui-input-block">
+					<input type="text" name="name" id="name"  lay-verify="name" autocomplete="off"  class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">标签备注</label>
+				<div class="layui-input-block">
+					<input type="text" name="remark" id="remark"  lay-verify="remark" placeholder="如果为多选或单选框请用逗号分隔为选项值" autocomplete="off"  class="layui-input">
+				</div>
+			</div>
+			<button class="layui-btn" lay-submit lay-filter="submmitFilter" style="display: none;" id="sunmitbtn"></button>
+		</form>
+
+		<!-- JS -->
+		<script src="${APP_PATH }/static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+		<script src="${APP_PATH }/static/jquery/1.9.1/jquery.min.js" th:src="@{/static/jquery/1.9.1/jquery.min.js}"></script>
+		<script type="text/javascript" th:inline="none">
+
+			var parentIndex;
+			layui.use(['form'], function(){
+				var form = layui.form
+						,layer = layui.layer
+				//表单验证
+				form.verify({
+					name: function(value, item) { //value：表单的值、item：表单的DOM对象
+						value = $.trim(value);
+						if (value.length == 0) {
+							return '类名不能为空';
+						}
+					},
+					type:function(value,item){
+						if (value == 0) {
+							return '请选择类型';
+						}
+					},
+					majorClass:function(value,item){
+						if (value == 0) {
+							return '请选择大类';
+						}
+					},
+					smallClass:function(value,item){
+						if (value == 0 && $("#type").val() == 1) {
+							return '请选择小类';
+						}
+					},
+					label:function(value,item){
+						if (value == 0) {
+							return '请选择标签';
+						}
+					},
+					labelName:function(value,item){
+						if (value == 0) {
+							return '请输入标签属性名称';
+						}
+					},
+					labelId:function(value,item){
+						if (value == 0) {
+							return '请输入标签属性ID';
+						}
+					}
+
+				});
+				//监听类型下拉选择切换
+				form.on('select(type)', function(data){
+					var type = (data.value);
+					if (type == 1) {
+						$("#bigClass").show();
+						$("#sClass").show();
+					}else{
+						$("#bigClass").show();
+						$("#sClass").hide();
+
+					}
+				});
+				//监听类型下拉选择切换
+				form.on('select(majorClass)', function(data){
+					var type = (data.value);
+					if (type != 0) {
+						$.ajax({
+							url: '/getSmallClassByMajorClassId',
+							type: 'POST',
+							data: {"majorId":type},
+							success: function(result){
+								var sc = result.sc;
+								//console.log(sc);
+								var htmlStr = '<option value="0">请选择小类</option>';
+								//$("#smallClass").html(htmlStr);
+								//$.each(sc,function(index,item){
+								//	htmlStr += '<option style="text-align:center;" value="'+item.id+'">'+item.name+'</option>';
+								//});
+								for(var key in sc){   //key    data[key]
+									//console.log(key + "==" + sc[key].name);
+									htmlStr += '<option style="text-align:center;" value="'+sc[key].id+'">'+sc[key].name+'</option>';
+								}
+								$("#smallClass").html(htmlStr);
+								form.render('select');
+							}
+						});
+					}
+				});
+
+				//监听提交
+				form.on('submit(submmitFilter)', function(data){
+
+					$.ajax({
+						url: $("#formUrl").text(),
+						type: 'POST',
+						data: $("#form").serialize(),
+						async:false,
+						success: function(result){
+							var code = result.code;
+							var type = result.type;
+							if(code =='2'){
+								layer.msg('属性NAME名已经存在', {
+									icon: 5
+									,time: 1500
+								});
+								return ;
+							}
+							if(code =='3'){
+								layer.msg('属性ID已经存在', {
+									icon: 5
+									,time: 1500
+								});
+								return ;
+							}
+							if(code == '1'){
+								if(type == 'add'){
+									layer.msg('添加成功', {
+										icon: 6
+										,time: 1500
+									});
+								}
+								if(type == 'update'){
+									layer.msg('修改成功', {
+										icon: 6
+										,time: 1500
+									});
+								}
+								setTimeout(function(){
+									parent.conditionReset();
+									parent.layer.close(parentIndex);
+								}, 1500);
+							}
+						},
+						error: function() {
+							layer.msg('提交失败', {
+								icon: 5
+								,time: 1500
+							});
+						}
+					});
+					return false;
+				});
+
+			});
+			//模拟按钮提交
+			function submitForm(index){
+				parentIndex = index;
+				$("#sunmitbtn").click();
+			}
+			var showImg =new Array();
+			var detailsImg =new Array();
+			/* 图片上传 */
+			layui.use('upload', function(){
+				var upload = layui.upload;
+				//执行实例
+				var uploadInst = upload.render({
+					elem: '#test' //绑定元素
+					,url: '/upload/uploadFile?name=imgFile' //上传接口
+					,method:'post'   //提交方式
+					,field:'videoImage' //设定文件域的字段名
+					,accept:'images' //只允许上传图片
+					,acceptMime:'image/*' //打开文本选择框时，只显示图片类型
+					,size:10240  //设置文件最大可允许上传的大小，单位 KB。
+					,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+						layer.load(); //上传loading
+						//预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+						obj.preview(function(index, file, result){
+							$('#demo').attr('src',result);
+							$('#demo').attr('alt',file.name);
+						});
+					}
+					,done: function(res){//上传完毕回调
+						layer.closeAll('loading');//关闭loading
+						//获得文件的链接等，
+						if(res.state==0){//上传成功
+							$('#images').val(res.link);
+						}else {
+							layer.msg('失败', {
+								icon: 5
+								,time: 1500
+							});
+						}
+					}
+					,error: function(){
+						//请求异常回调
+						layer.closeAll('loading');//关闭loading
+					}
+				});
+			})
+
+		</script>
+
+	</body>
+</html>

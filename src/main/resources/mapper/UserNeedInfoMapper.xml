@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.py.dao.UserNeedInfoMapper">
+  <resultMap id="BaseResultMap" type="com.py.bean.UserNeedInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="home_time" jdbcType="TIMESTAMP" property="homeTime" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="param" jdbcType="VARCHAR" property="param" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, home_time, address, contact, phone, note, param
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_need_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_need_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.py.bean.UserNeedInfo"  useGeneratedKeys="true" keyProperty="id">
+    insert into user_need_info (id, home_time, address, 
+      contact, phone, note, 
+      param)
+    values (#{id,jdbcType=INTEGER}, #{homeTime,jdbcType=TIMESTAMP}, #{address,jdbcType=VARCHAR}, 
+      #{contact,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{param,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.py.bean.UserNeedInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into user_need_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="homeTime != null">
+        home_time,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="param != null">
+        param,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="homeTime != null">
+        #{homeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        #{param,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.py.bean.UserNeedInfo">
+    update user_need_info
+    <set>
+      <if test="homeTime != null">
+        home_time = #{homeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        param = #{param,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.py.bean.UserNeedInfo">
+    update user_need_info
+    set home_time = #{homeTime,jdbcType=TIMESTAMP},
+      address = #{address,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      param = #{param,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+
+</mapper>

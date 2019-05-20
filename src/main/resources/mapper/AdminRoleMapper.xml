@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.py.dao.AdminRoleMapper">
+  <resultMap id="BaseResultMap" type="com.py.bean.AdminRole">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="admin_id" jdbcType="INTEGER" property="adminId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, admin_id, role_id, time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from admin_role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from admin_role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.py.bean.AdminRole">
+    insert into admin_role (id, admin_id, role_id, 
+      time)
+    values (#{id,jdbcType=INTEGER}, #{adminId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, 
+      #{time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.py.bean.AdminRole">
+    insert into admin_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="adminId != null">
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.py.bean.AdminRole">
+    update admin_role
+    <set>
+      <if test="adminId != null">
+        admin_id = #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.py.bean.AdminRole">
+    update admin_role
+    set admin_id = #{adminId,jdbcType=INTEGER},
+      role_id = #{roleId,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--selectByPrimary-->
+  <select id="selectByPrimary" resultMap="BaseResultMap" parameterType="com.py.bean.AdminRole">
+    select * from admin_role where 1=1
+    <if test="adminId != null">
+      and admin_id = #{adminId,jdbcType=INTEGER}
+    </if>
+    <if test="roleId != null">
+      and role_id = #{roleId,jdbcType=INTEGER}
+    </if>
+    <if test="time != null">
+      and `time` = #{time,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+
+</mapper>

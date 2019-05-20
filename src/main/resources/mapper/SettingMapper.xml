@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.py.dao.SettingMapper">
+  <resultMap id="BaseResultMap" type="com.py.bean.Setting">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pay_deposit" jdbcType="VARCHAR" property="payDeposit" />
+    <result column="amount_ratio" jdbcType="VARCHAR" property="amountRatio" />
+    <result column="transfer_ratio" jdbcType="VARCHAR" property="transferRatio" />
+    <result column="parameter1" jdbcType="VARCHAR" property="parameter1" />
+    <result column="parameter2" jdbcType="VARCHAR" property="parameter2" />
+    <result column="parameter3" jdbcType="VARCHAR" property="parameter3" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, pay_deposit, amount_ratio, transfer_ratio, parameter1, parameter2, parameter3
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from setting
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from setting
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.py.bean.Setting">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into setting (pay_deposit, amount_ratio, transfer_ratio, 
+      parameter1, parameter2, parameter3
+      )
+    values (#{payDeposit,jdbcType=VARCHAR}, #{amountRatio,jdbcType=VARCHAR}, #{transferRatio,jdbcType=VARCHAR}, 
+      #{parameter1,jdbcType=VARCHAR}, #{parameter2,jdbcType=VARCHAR}, #{parameter3,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.py.bean.Setting">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into setting
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="payDeposit != null">
+        pay_deposit,
+      </if>
+      <if test="amountRatio != null">
+        amount_ratio,
+      </if>
+      <if test="transferRatio != null">
+        transfer_ratio,
+      </if>
+      <if test="parameter1 != null">
+        parameter1,
+      </if>
+      <if test="parameter2 != null">
+        parameter2,
+      </if>
+      <if test="parameter3 != null">
+        parameter3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="payDeposit != null">
+        #{payDeposit,jdbcType=VARCHAR},
+      </if>
+      <if test="amountRatio != null">
+        #{amountRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="transferRatio != null">
+        #{transferRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter1 != null">
+        #{parameter1,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter2 != null">
+        #{parameter2,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter3 != null">
+        #{parameter3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.py.bean.Setting">
+    update setting
+    <set>
+      <if test="payDeposit != null">
+        pay_deposit = #{payDeposit,jdbcType=VARCHAR},
+      </if>
+      <if test="amountRatio != null">
+        amount_ratio = #{amountRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="transferRatio != null">
+        transfer_ratio = #{transferRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter1 != null">
+        parameter1 = #{parameter1,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter2 != null">
+        parameter2 = #{parameter2,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter3 != null">
+        parameter3 = #{parameter3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.py.bean.Setting">
+    update setting
+    set pay_deposit = #{payDeposit,jdbcType=VARCHAR},
+      amount_ratio = #{amountRatio,jdbcType=VARCHAR},
+      transfer_ratio = #{transferRatio,jdbcType=VARCHAR},
+      parameter1 = #{parameter1,jdbcType=VARCHAR},
+      parameter2 = #{parameter2,jdbcType=VARCHAR},
+      parameter3 = #{parameter3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

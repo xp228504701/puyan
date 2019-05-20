@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.py.dao.MasterQuoteMapper">
+  <resultMap id="BaseResultMap" type="com.py.bean.MasterQuote">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="master_id" jdbcType="INTEGER" property="masterId" />
+    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+    <result column="param2" jdbcType="VARCHAR" property="param2" />
+    <result column="param3" jdbcType="VARCHAR" property="param3" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, master_id, order_num, money, status, time, param1, param2, param3
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from master_quote
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from master_quote
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.py.bean.MasterQuote">
+    insert into master_quote (id, master_id, order_num, 
+      money, status, time, 
+      param1, param2, param3
+      )
+    values (#{id,jdbcType=INTEGER}, #{masterId,jdbcType=INTEGER}, #{orderNum,jdbcType=VARCHAR}, 
+      #{money,jdbcType=DOUBLE}, #{status,jdbcType=INTEGER}, #{time,jdbcType=VARCHAR}, 
+      #{param1,jdbcType=VARCHAR}, #{param2,jdbcType=VARCHAR}, #{param3,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.py.bean.MasterQuote">
+    insert into master_quote
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="masterId != null">
+        master_id,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="param1 != null">
+        param1,
+      </if>
+      <if test="param2 != null">
+        param2,
+      </if>
+      <if test="param3 != null">
+        param3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="masterId != null">
+        #{masterId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="param1 != null">
+        #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        #{param2,jdbcType=VARCHAR},
+      </if>
+      <if test="param3 != null">
+        #{param3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.py.bean.MasterQuote">
+    update master_quote
+    <set>
+      <if test="masterId != null">
+        master_id = #{masterId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="param1 != null">
+        param1 = #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        param2 = #{param2,jdbcType=VARCHAR},
+      </if>
+      <if test="param3 != null">
+        param3 = #{param3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.py.bean.MasterQuote">
+    update master_quote
+    set master_id = #{masterId,jdbcType=INTEGER},
+      order_num = #{orderNum,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DOUBLE},
+      status = #{status,jdbcType=INTEGER},
+      time = #{time,jdbcType=VARCHAR},
+      param1 = #{param1,jdbcType=VARCHAR},
+      param2 = #{param2,jdbcType=VARCHAR},
+      param3 = #{param3,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--selectByPrimary-->
+  <select id="selectByPrimary" resultMap="BaseResultMap" parameterType="com.py.bean.MasterQuote">
+    select * from master_quote where 1=1
+    <if test="masterId != null">
+      and master_id = #{masterId,jdbcType=INTEGER}
+    </if>
+    <if test="orderNum != null">
+      and order_num = #{orderNum,jdbcType=VARCHAR}
+    </if>
+    <if test="money != null">
+      and money = #{money,jdbcType=DOUBLE}
+    </if>
+    <if test="status != null">
+      and status = #{status,jdbcType=INTEGER}
+    </if>
+    <if test="time != null">
+      and `time` = #{time,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+
+  <resultMap id="ResultQuoteMap" type="com.py.bean.QuoteSynopsis">
+    <id column="id" jdbcType="INTEGER" property="masterQuoteId" />
+    <result column="order_num" jdbcType="VARCHAR" property="orderNo" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="shop_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="shop_address" jdbcType="VARCHAR" property="storeAddress" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+  </resultMap>
+
+  <!--selectQuoteByOrderNo-->
+  <select id="selectQuoteByOrderNo" resultMap="ResultQuoteMap" parameterType="com.py.bean.MasterQuote">
+    SELECT
+      mq.id,
+      mq.order_num,
+      mq.`status`,
+      mq.money,
+      m.shop_name,
+      m.shop_address,
+	  mq.time
+  FROM
+      master_quote mq
+      LEFT JOIN `master` m ON m.id = mq.master_id
+  WHERE 1=1
+    <if test="masterId != null">
+      and mq.master_id = #{masterId,jdbcType=INTEGER}
+    </if>
+    <if test="orderNum != null">
+      and mq.order_num = #{orderNum,jdbcType=VARCHAR}
+    </if>
+    <if test="money != null">
+      and mq.money = #{money,jdbcType=DOUBLE}
+    </if>
+    <if test="status != null">
+      and mq.status = #{status,jdbcType=INTEGER}
+    </if>
+
+
+  </select>
+
+
+
+
+</mapper>

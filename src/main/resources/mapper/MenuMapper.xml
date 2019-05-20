@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.py.dao.MenuMapper">
+  <resultMap id="BaseResultMap" type="com.py.bean.Menu">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="superior_id" jdbcType="INTEGER" property="superiorId" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="super_name" jdbcType="VARCHAR" property="menuName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, path, superior_id, note, time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.py.bean.Menu">
+    insert into menu (id, name, path, 
+      superior_id, note, time
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{superiorId,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.py.bean.Menu">
+    insert into menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="path != null">
+        path,
+      </if>
+      <if test="superiorId != null">
+        superior_id,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="superiorId != null">
+        #{superiorId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.py.bean.Menu">
+    update menu
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null">
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="superiorId != null">
+        superior_id = #{superiorId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.py.bean.Menu">
+    update menu
+    set name = #{name,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      superior_id = #{superiorId,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- seleFatherName -->
+  <select id="selectFatherName" resultMap="BaseResultMap">
+  	SELECT
+		*
+	FROM
+		menu m
+	WHERE
+		m.superior_id = 0
+  </select>
+
+  <!-- selectSonName -->
+  <select id="selectSonName" resultMap="BaseResultMap">
+  	SELECT
+		*
+	FROM
+		menu m
+	WHERE
+		m.superior_id != 0
+  </select>
+
+  <!-- selectSonNameById -->
+  <select id="selectSonNameById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	SELECT
+		*
+	FROM
+		menu m
+	WHERE
+		m.superior_id = #{superiorId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByExample" parameterType="com.py.bean.Menu" resultMap="BaseResultMap">
+
+    SELECT
+      m.*,
+      m1.`name` AS super_name
+      FROM
+      menu m
+      LEFT JOIN menu m1 ON m.superior_id = m1.id
+
+    <if test="name != null">
+      and m.name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="path != null">
+      and m.path = #{path,jdbcType=VARCHAR}
+    </if>
+    <if test="superiorId != null">
+      and m.superior_id = #{superiorId,jdbcType=INTEGER}
+    </if>
+    <if test="note != null">
+      and m.note = #{note,jdbcType=VARCHAR}
+    </if>
+    <if test="time != null">
+      and m.time = #{time,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="selectByPrimary" parameterType="com.py.bean.Menu" resultMap="BaseResultMap">
+    select * from menu where 1=1
+    <if test="name != null">
+      and `name` = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="path != null">
+      and path = #{path,jdbcType=VARCHAR}
+    </if>
+    <if test="superiorId != null">
+      and superior_id = #{superiorId,jdbcType=INTEGER}
+    </if>
+    <if test="note != null">
+      and note = #{note,jdbcType=VARCHAR}
+    </if>
+    <if test="time != null">
+      and `time` = #{time,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="selectMenuByPath" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from menu where 1=1
+      and path = #{path}
+  </select>
+
+  <select id="selectByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+
+  		SELECT
+		COUNT( id )
+	FROM
+		menu
+	WHERE
+		`name` = #{menuName}
+
+  </select>
+
+</mapper>

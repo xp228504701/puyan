@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.py.dao.MasterMapper">
+  <resultMap id="BaseResultMap" type="com.py.bean.Master">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+    <result column="shop_address" jdbcType="VARCHAR" property="shopAddress" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="balance" jdbcType="DOUBLE" property="balance" />
+    <result column="integral" jdbcType="VARCHAR" property="integral" />
+    <result column="push_registration" jdbcType="VARCHAR" property="pushRegistration" />
+    <result column="push_type" jdbcType="INTEGER" property="pushType" />
+    <result column="black" jdbcType="INTEGER" property="black" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="setting" jdbcType="INTEGER" property="setting" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="office_type" jdbcType="INTEGER" property="officeType" />
+    <result column="emergency_contact" jdbcType="VARCHAR" property="emergencyContact" />
+    <result column="residential_address" jdbcType="VARCHAR" property="residentialAddress" />
+    <result column="param" jdbcType="VARCHAR" property="param" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, account, password, name, shop_name, shop_address, code, status, avatar, balance, 
+    integral, push_registration, push_type, black, time, setting, token, office_type, 
+    emergency_contact, residential_address, param
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from master
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from master
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.py.bean.Master">
+    insert into master (id, account, password, 
+      name, shop_name, shop_address, 
+      code, status, avatar, 
+      balance, integral, push_registration, 
+      push_type, black, time, 
+      setting, token, office_type, 
+      emergency_contact, residential_address, param
+      )
+    values (#{id,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, #{shopAddress,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{avatar,jdbcType=VARCHAR}, 
+      #{balance,jdbcType=DOUBLE}, #{integral,jdbcType=VARCHAR}, #{pushRegistration,jdbcType=VARCHAR}, 
+      #{pushType,jdbcType=INTEGER}, #{black,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, 
+      #{setting,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}, #{officeType,jdbcType=INTEGER}, 
+      #{emergencyContact,jdbcType=VARCHAR}, #{residentialAddress,jdbcType=VARCHAR}, #{param,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.py.bean.Master">
+    insert into master
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="shopName != null">
+        shop_name,
+      </if>
+      <if test="shopAddress != null">
+        shop_address,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+      <if test="balance != null">
+        balance,
+      </if>
+      <if test="integral != null">
+        integral,
+      </if>
+      <if test="pushRegistration != null">
+        push_registration,
+      </if>
+      <if test="pushType != null">
+        push_type,
+      </if>
+      <if test="black != null">
+        black,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="setting != null">
+        setting,
+      </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="officeType != null">
+        office_type,
+      </if>
+      <if test="emergencyContact != null">
+        emergency_contact,
+      </if>
+      <if test="residentialAddress != null">
+        residential_address,
+      </if>
+      <if test="param != null">
+        param,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null">
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAddress != null">
+        #{shopAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null">
+        #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="integral != null">
+        #{integral,jdbcType=VARCHAR},
+      </if>
+      <if test="pushRegistration != null">
+        #{pushRegistration,jdbcType=VARCHAR},
+      </if>
+      <if test="pushType != null">
+        #{pushType,jdbcType=INTEGER},
+      </if>
+      <if test="black != null">
+        #{black,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="setting != null">
+        #{setting,jdbcType=INTEGER},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="officeType != null">
+        #{officeType,jdbcType=INTEGER},
+      </if>
+      <if test="emergencyContact != null">
+        #{emergencyContact,jdbcType=VARCHAR},
+      </if>
+      <if test="residentialAddress != null">
+        #{residentialAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        #{param,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.py.bean.Master">
+    update master
+    <set>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null">
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAddress != null">
+        shop_address = #{shopAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null">
+        balance = #{balance,jdbcType=DOUBLE},
+      </if>
+      <if test="integral != null">
+        integral = #{integral,jdbcType=VARCHAR},
+      </if>
+      <if test="pushRegistration != null">
+        push_registration = #{pushRegistration,jdbcType=VARCHAR},
+      </if>
+      <if test="pushType != null">
+        push_type = #{pushType,jdbcType=INTEGER},
+      </if>
+      <if test="black != null">
+        black = #{black,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="setting != null">
+        setting = #{setting,jdbcType=INTEGER},
+      </if>
+      <if test="token != null">
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="officeType != null">
+        office_type = #{officeType,jdbcType=INTEGER},
+      </if>
+      <if test="emergencyContact != null">
+        emergency_contact = #{emergencyContact,jdbcType=VARCHAR},
+      </if>
+      <if test="residentialAddress != null">
+        residential_address = #{residentialAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        param = #{param,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.py.bean.Master">
+    update master
+    set account = #{account,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      shop_address = #{shopAddress,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      balance = #{balance,jdbcType=DOUBLE},
+      integral = #{integral,jdbcType=VARCHAR},
+      push_registration = #{pushRegistration,jdbcType=VARCHAR},
+      push_type = #{pushType,jdbcType=INTEGER},
+      black = #{black,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP},
+      setting = #{setting,jdbcType=INTEGER},
+      token = #{token,jdbcType=VARCHAR},
+      office_type = #{officeType,jdbcType=INTEGER},
+      emergency_contact = #{emergencyContact,jdbcType=VARCHAR},
+      residential_address = #{residentialAddress,jdbcType=VARCHAR},
+      param = #{param,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectByExample" parameterType="com.py.bean.Master" resultMap="BaseResultMap">
+    select * from master where 1=1
+    <if test="account != null">
+      and account = #{account,jdbcType=VARCHAR}
+    </if>
+    <if test="password != null">
+      and password = #{password,jdbcType=VARCHAR}
+    </if>
+    <if test="code != null">
+      and code = #{code,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null">
+      and status = #{status,jdbcType=INTEGER}
+    </if>
+    <if test="avatar != null">
+      and avatar = #{avatar,jdbcType=VARCHAR}
+    </if>
+    <if test="balance != null">
+      and balance = #{balance,jdbcType=DOUBLE}
+    </if>
+    <if test="integral != null">
+      and integral = #{integral,jdbcType=VARCHAR}
+    </if>
+    <if test="pushRegistration != null">
+      and push_registration = #{pushRegistration,jdbcType=VARCHAR}
+    </if>
+    <if test="pushType != null">
+      and push_type = #{pushType,jdbcType=INTEGER}
+    </if>
+    <if test="black != null">
+      and black = #{black,jdbcType=INTEGER}
+    </if>
+    <if test="token != null">
+      and token = #{token,jdbcType=VARCHAR}
+    </if>
+    <if test="time != null">
+      and `time` = #{time,jdbcType=TIMESTAMP}
+    </if>
+    <if test="setting != null">
+      and setting = #{setting,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectByPrimary" parameterType="com.py.bean.Master" resultMap="BaseResultMap">
+    select * from master where 1=1
+    <if test="account != null">
+      and account = #{account,jdbcType=VARCHAR}
+    </if>
+    <if test="password != null">
+      and password = #{password,jdbcType=VARCHAR}
+    </if>
+    <if test="code != null">
+      and code = #{code,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null">
+      and status = #{status,jdbcType=INTEGER}
+    </if>
+    <if test="avatar != null">
+      and avatar = #{avatar,jdbcType=VARCHAR}
+    </if>
+    <if test="balance != null">
+      and balance = #{balance,jdbcType=DOUBLE}
+    </if>
+    <if test="integral != null">
+      and integral = #{integral,jdbcType=VARCHAR}
+    </if>
+    <if test="pushRegistration != null">
+      and push_registration = #{pushRegistration,jdbcType=VARCHAR}
+    </if>
+    <if test="pushType != null">
+      and push_type = #{pushType,jdbcType=INTEGER}
+    </if>
+    <if test="black != null">
+      and black = #{black,jdbcType=INTEGER}
+    </if>
+    <if test="time != null">
+      and `time` = #{time,jdbcType=TIMESTAMP}
+    </if>
+    <if test="setting != null">
+      and setting = #{setting,jdbcType=INTEGER}
+    </if>
+  </select>
+
+
+  <select id="selectMasterCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+
+    SELECT
+      COUNT( m.account )
+  FROM
+      `master` m
+  WHERE
+      m.account = #{account}
+
+  </select>
+
+
+
+
+</mapper>

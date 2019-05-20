@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="${APP_PATH }/static/layui/css/layui.css" th:href="@{/static/layui/css/layui.css}">
+		<link rel="stylesheet" href="${APP_PATH }/static/mycss/style.css" th:href="@{/static/mycss/style.css}">
+	</head>
+	<style>
+		.contPadding{
+			padding-top: 20px;
+			width: 350px;
+		}
+
+	</style>
+	<body class="contPadding">
+		<span th:id="formUrl" style="display: none;" th:text="${Surl}"></span>
+		<form class="layui-form" id="form" action="" commandName="obj" lay-filter="formFilter">
+			<div class="layui-form-item" style="display: none;">
+				<label class="layui-form-label">id</label>
+				<div class="layui-input-block">
+					<input type="text" name="id" lay-verify="id" th:value="${info} eq null ? '' : ${info.id}" id="id" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">文字内容</label>
+				<div class="layui-input-block">
+					<input type="text" name="value" id="value" th:value="${info} eq null ? '' : ${info.value}" lay-verify="value" autocomplete="off" placeholder="请输入连接标题" class="layui-input" value='${admin.account}'>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">链接地址</label>
+				<div class="layui-input-block">
+					<input type="text" name="link" id="link" th:value="${info} eq null ? '' : ${info.link}" lay-verify="link" autocomplete="off" placeholder="请输入链接地址" class="layui-input" value='${admin.account}'>
+				</div>
+			</div>
+
+			<button class="layui-btn" lay-submit lay-filter="submmitFilter" style="display: none;" id="sunmitbtn"></button>
+		</form>
+
+		<!-- JS -->
+		<script src="${APP_PATH }/static/layui/layui.js" th:src="@{/static/layui/layui.js}"></script>
+		<script src="${APP_PATH }/static/jquery/1.9.1/jquery.min.js" th:src="@{/static/jquery/1.9.1/jquery.min.js}"></script>
+		<script type="text/javascript" th:inline="none">
+
+			var parentIndex;
+			layui.use(['form'], function(){
+				var form = layui.form
+						,layer = layui.layer
+
+				//监听提交
+				form.on('submit(submmitFilter)', function(data){
+					$.ajax({
+						url: $("#formUrl").text(),
+						type: 'POST',
+						data: $("#form").serialize(),
+						async:false,
+						success: function(result){
+							var code = result.code;
+							var type = result.type;
+							if(code == '1'){
+								if(type == 'add'){
+									layer.msg('添加成功', {
+										icon: 6
+										,time: 1500
+									});
+								}
+								if(type == 'update'){
+									layer.msg('修改成功', {
+										icon: 6
+										,time: 1500
+									});
+								}
+								setTimeout(function(){
+									parent.conditionReset();
+									parent.layer.close(parentIndex);
+								}, 1500);
+							}
+						},
+						error: function() {
+							layer.msg('提交失败', {
+								icon: 5
+								,time: 1500
+							});
+						}
+					});
+					return false;
+				});
+
+			});
+			//模拟按钮提交
+			function submitForm(index){
+				parentIndex = index;
+				$("#sunmitbtn").click();
+			}
+
+
+		</script>
+
+	</body>
+</html>

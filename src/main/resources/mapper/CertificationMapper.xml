@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.py.dao.CertificationMapper">
+  <resultMap id="BaseResultMap" type="com.py.bean.Certification">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="demand_id" jdbcType="INTEGER" property="demandId" />
+    <result column="label_type" jdbcType="INTEGER" property="labelType" />
+    <result column="label_name" jdbcType="VARCHAR" property="labelName" />
+    <result column="master_id" jdbcType="INTEGER" property="masterId" />
+    <result column="str_value" jdbcType="VARCHAR" property="strValue" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+    <result column="param2" jdbcType="VARCHAR" property="param2" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, value, time, demand_id, label_type, label_name, master_id, str_value, param1, 
+    param2
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from certification
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from certification
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.py.bean.Certification">
+    insert into certification (id, name, value, 
+      time, demand_id, label_type, 
+      label_name, master_id, str_value, 
+      param1, param2)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, 
+      #{time,jdbcType=TIMESTAMP}, #{demandId,jdbcType=INTEGER}, #{labelType,jdbcType=INTEGER}, 
+      #{labelName,jdbcType=VARCHAR}, #{masterId,jdbcType=INTEGER}, #{strValue,jdbcType=VARCHAR}, 
+      #{param1,jdbcType=VARCHAR}, #{param2,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.py.bean.Certification">
+    insert into certification
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="value != null">
+        value,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="demandId != null">
+        demand_id,
+      </if>
+      <if test="labelType != null">
+        label_type,
+      </if>
+      <if test="labelName != null">
+        label_name,
+      </if>
+      <if test="masterId != null">
+        master_id,
+      </if>
+      <if test="strValue != null">
+        str_value,
+      </if>
+      <if test="param1 != null">
+        param1,
+      </if>
+      <if test="param2 != null">
+        param2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="demandId != null">
+        #{demandId,jdbcType=INTEGER},
+      </if>
+      <if test="labelType != null">
+        #{labelType,jdbcType=INTEGER},
+      </if>
+      <if test="labelName != null">
+        #{labelName,jdbcType=VARCHAR},
+      </if>
+      <if test="masterId != null">
+        #{masterId,jdbcType=INTEGER},
+      </if>
+      <if test="strValue != null">
+        #{strValue,jdbcType=VARCHAR},
+      </if>
+      <if test="param1 != null">
+        #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        #{param2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.py.bean.Certification">
+    update certification
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        value = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="demandId != null">
+        demand_id = #{demandId,jdbcType=INTEGER},
+      </if>
+      <if test="labelType != null">
+        label_type = #{labelType,jdbcType=INTEGER},
+      </if>
+      <if test="labelName != null">
+        label_name = #{labelName,jdbcType=VARCHAR},
+      </if>
+      <if test="masterId != null">
+        master_id = #{masterId,jdbcType=INTEGER},
+      </if>
+      <if test="strValue != null">
+        str_value = #{strValue,jdbcType=VARCHAR},
+      </if>
+      <if test="param1 != null">
+        param1 = #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        param2 = #{param2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.py.bean.Certification">
+    update certification
+    set name = #{name,jdbcType=VARCHAR},
+      value = #{value,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      demand_id = #{demandId,jdbcType=INTEGER},
+      label_type = #{labelType,jdbcType=INTEGER},
+      label_name = #{labelName,jdbcType=VARCHAR},
+      master_id = #{masterId,jdbcType=INTEGER},
+      str_value = #{strValue,jdbcType=VARCHAR},
+      param1 = #{param1,jdbcType=VARCHAR},
+      param2 = #{param2,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+
+
+</mapper>

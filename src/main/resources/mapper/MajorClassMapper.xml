@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.py.dao.MajorClassMapper">
+  <resultMap id="BaseResultMap" type="com.py.bean.MajorClass">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="images" jdbcType="VARCHAR" property="images" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="is_hot" jdbcType="INTEGER" property="isHot" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, images, level, is_hot, time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from major_class
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from major_class
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.py.bean.MajorClass">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into major_class (name, images, level, 
+      is_hot, time)
+    values (#{name,jdbcType=VARCHAR}, #{images,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, 
+      #{isHot,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.py.bean.MajorClass">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into major_class
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
+      <if test="images != null">
+        images,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="isHot != null">
+        is_hot,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null">
+        #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="isHot != null">
+        #{isHot,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.py.bean.MajorClass">
+    update major_class
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null">
+        images = #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="isHot != null">
+        is_hot = #{isHot,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.py.bean.MajorClass">
+    update major_class
+    set name = #{name,jdbcType=VARCHAR},
+      images = #{images,jdbcType=VARCHAR},
+      level = #{level,jdbcType=VARCHAR},
+      is_hot = #{isHot,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByExample" parameterType="com.py.bean.MajorClass" resultMap="BaseResultMap">
+    select * from major_class mc where 1=1
+    <if test="name != null">
+      and `name` = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="images != null">
+      and images = #{images,jdbcType=VARCHAR}
+    </if>
+    <if test="level != null">
+      and level = #{level,jdbcType=VARCHAR}
+    </if>
+    <if test="isHot != null">
+      and is_hot = #{isHot,jdbcType=INTEGER}
+    </if>
+    <if test="time != null">
+      and time = #{time,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+
+  <select id="selectByPrimary" parameterType="com.py.bean.MajorClass" resultMap="BaseResultMap">
+    select * from major_class mc where 1=1
+    <if test="name != null">
+      and `name` = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="images != null">
+      and images = #{images,jdbcType=VARCHAR}
+    </if>
+    <if test="level != null">
+      and level = #{level,jdbcType=VARCHAR}
+    </if>
+    <if test="isHot != null">
+      and is_hot = #{isHot,jdbcType=INTEGER}
+    </if>
+    <if test="time != null">
+      and time = #{time,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+
+  <select id="selectMajorClassByName" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select count(id) from major_class where `name` = #{name}
+  </select>
+
+  <select id="selectMajorClassAllName" resultMap="BaseResultMap">
+    SELECT mc.id,mc.name from major_class mc
+  </select>
+
+  <select id="selectByName" resultMap="BaseResultMap"  parameterType="java.lang.String">
+   SELECT
+      mc.*
+  FROM
+      major_class mc
+      LEFT JOIN small_class sc ON sc.major_class = mc.id
+      where 1=1
+    <if test="smallClassName != null">
+      and sc.`name` like #{smallClassName,jdbcType=VARCHAR}"%"
+    </if>
+  </select>
+
+
+
+</mapper>

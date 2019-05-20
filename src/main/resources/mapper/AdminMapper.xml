@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.py.dao.AdminMapper">
+  <resultMap id="BaseResultMap" type="com.py.bean.Admin">
+    <id column="admin_id" jdbcType="INTEGER" property="adminId" />
+    <result column="admin_account" jdbcType="VARCHAR" property="adminAccount" />
+    <result column="admin_pass_word" jdbcType="VARCHAR" property="adminPassWord" />
+    <result column="admin_creation_time" jdbcType="TIMESTAMP" property="adminCreationTime" />
+    <result column="admin_full_name" jdbcType="VARCHAR" property="adminFullName" />
+    <result column="admin_status" jdbcType="INTEGER" property="adminStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    admin_id, admin_account, admin_pass_word, admin_creation_time, admin_full_name, admin_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from admin
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from admin
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.py.bean.Admin">
+    insert into admin (admin_id, admin_account, admin_pass_word, 
+      admin_creation_time, admin_full_name, admin_status
+      )
+    values (#{adminId,jdbcType=INTEGER}, #{adminAccount,jdbcType=VARCHAR}, #{adminPassWord,jdbcType=VARCHAR}, 
+      #{adminCreationTime,jdbcType=TIMESTAMP}, #{adminFullName,jdbcType=VARCHAR}, #{adminStatus,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.py.bean.Admin">
+    insert into admin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="adminAccount != null">
+        admin_account,
+      </if>
+      <if test="adminPassWord != null">
+        admin_pass_word,
+      </if>
+      <if test="adminCreationTime != null">
+        admin_creation_time,
+      </if>
+      <if test="adminFullName != null">
+        admin_full_name,
+      </if>
+      <if test="adminStatus != null">
+        admin_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="adminAccount != null">
+        #{adminAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPassWord != null">
+        #{adminPassWord,jdbcType=VARCHAR},
+      </if>
+      <if test="adminCreationTime != null">
+        #{adminCreationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adminFullName != null">
+        #{adminFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="adminStatus != null">
+        #{adminStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.py.bean.Admin">
+    update admin
+    <set>
+      <if test="adminAccount != null">
+        admin_account = #{adminAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPassWord != null">
+        admin_pass_word = #{adminPassWord,jdbcType=VARCHAR},
+      </if>
+      <if test="adminCreationTime != null">
+        admin_creation_time = #{adminCreationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adminFullName != null">
+        admin_full_name = #{adminFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="adminStatus != null">
+        admin_status = #{adminStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.py.bean.Admin">
+    update admin
+    set admin_account = #{adminAccount,jdbcType=VARCHAR},
+      admin_pass_word = #{adminPassWord,jdbcType=VARCHAR},
+      admin_creation_time = #{adminCreationTime,jdbcType=TIMESTAMP},
+      admin_full_name = #{adminFullName,jdbcType=VARCHAR},
+      admin_status = #{adminStatus,jdbcType=INTEGER}
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </update>
+
+  <!--selectByPrimary-->
+  <select id="selectByPrimary" parameterType="com.py.bean.Admin" resultMap="BaseResultMap">
+    select * from admin where 1=1
+    <if test="adminAccount != null">
+      and admin_account = #{adminAccount,jdbcType=VARCHAR}
+    </if>
+    <if test="adminPassWord != null">
+      and admin_pass_word = #{adminPassWord,jdbcType=VARCHAR}
+    </if>
+    <if test="adminCreationTime != null">
+      and admin_creation_time = #{adminCreationTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="adminFullName != null">
+      and admin_full_name = #{adminFullName,jdbcType=VARCHAR}
+    </if>
+    <if test="adminStatus != null">
+      and admin_status = #{adminStatus,jdbcType=INTEGER}
+    </if>
+  </select>
+
+
+  <!--selectByExample-->
+  <select id="selectByExample" parameterType="com.py.bean.Admin" resultMap="BaseResultMap">
+    select * from admin where 1=1
+    <if test="adminAccount != null">
+      and admin_account = #{adminAccount,jdbcType=VARCHAR}
+    </if>
+    <if test="adminPassWord != null">
+      and admin_pass_word = #{adminPassWord,jdbcType=VARCHAR}
+    </if>
+    <if test="adminCreationTime != null">
+      and admin_creation_time = #{adminCreationTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="adminFullName != null">
+      and admin_full_name = #{adminFullName,jdbcType=VARCHAR}
+    </if>
+    <if test="adminStatus != null">
+      and admin_status = #{adminStatus,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="selectAccount" parameterType="java.lang.String" resultType="java.lang.Integer">
+
+  		SELECT
+		COUNT( admin_id )
+	FROM
+		admin
+	WHERE
+		admin_account = #{account}
+
+  </select>
+
+
+
+
+</mapper>

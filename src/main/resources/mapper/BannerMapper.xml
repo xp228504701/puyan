@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.py.dao.BannerMapper">
+  <resultMap id="BaseResultMap" type="com.py.bean.Banner">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="images" jdbcType="VARCHAR" property="images" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="param" jdbcType="VARCHAR" property="param" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, images, url, weight, time, level, type, param
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from banner
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from banner
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.py.bean.Banner">
+    insert into banner (id, images, url, 
+      weight, time, level, 
+      type, param)
+    values (#{id,jdbcType=INTEGER}, #{images,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{level,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{param,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.py.bean.Banner">
+    insert into banner
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="images != null">
+        images,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="weight != null">
+        weight,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="param != null">
+        param,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="images != null">
+        #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        #{param,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.py.bean.Banner">
+    update banner
+    <set>
+      <if test="images != null">
+        images = #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        param = #{param,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.py.bean.Banner">
+    update banner
+    set images = #{images,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP},
+      level = #{level,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      param = #{param,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByExample" parameterType="com.py.bean.Banner" resultMap="BaseResultMap">
+    SELECT * FROM banner b WHERE 1=1
+    <if test="images != null">
+      AND images = #{images,jdbcType=VARCHAR}
+    </if>
+    <if test="url != null">
+      AND url = #{url,jdbcType=VARCHAR}
+    </if>
+    <if test="weight != null">
+      AND weight = #{weight,jdbcType=INTEGER}
+    </if>
+    <if test="time != null">
+      AND `time` = #{time,jdbcType=TIMESTAMP}
+    </if>
+    <if test="level != null">
+      AND `level` = #{level,jdbcType=VARCHAR}
+    </if>
+    <if test="type != null">
+      AND `type` = #{type,jdbcType=VARCHAR}
+    </if>
+    <if test="param != null">
+      AND param = #{param,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+
+  <select id="selectByPrimary" parameterType="com.py.bean.Banner" resultMap="BaseResultMap">
+    SELECT * FROM banner b WHERE 1=1
+    <if test="images != null">
+      AND images = #{images,jdbcType=VARCHAR}
+    </if>
+    <if test="url != null">
+      AND url = #{url,jdbcType=VARCHAR}
+    </if>
+    <if test="weight != null">
+      AND weight = #{weight,jdbcType=INTEGER}
+    </if>
+    <if test="time != null">
+      AND `time` = #{time,jdbcType=TIMESTAMP}
+    </if>
+    <if test="level != null">
+      AND `level` = #{level,jdbcType=VARCHAR}
+    </if>
+    <if test="type != null">
+      AND `type` = #{type,jdbcType=VARCHAR}
+    </if>
+    <if test="param != null">
+      AND param = #{param,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+
+
+</mapper>
